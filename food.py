@@ -16,5 +16,8 @@ class Food:
             self.is_food_on_screen = True
         return self.position
 
+    def draw(self, screen):
+        pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(self.position[0], self.position[1], 10, 10))
+
     def set_food_on_screen(self, choice):
         self.is_food_on_screen = choice

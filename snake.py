@@ -21,21 +21,33 @@ class Snake:
             self.direction = 'DOWN'
 
     def move(self, food_position):
+        print(f"Initial position: {self.position}")
+        print(f"Initial body: {self.body}")
+
+        # Create a new head position based on the current direction
+        new_head = list(self.position)
         if self.direction == 'UP':
-            self.position[1] -= 10
+            new_head[1] -= 10
         if self.direction == 'DOWN':
-            self.position[1] += 10
+            new_head[1] += 10
         if self.direction == 'LEFT':
-            self.position[0] -= 10
+            new_head[0] -= 10
         if self.direction == 'RIGHT':
-            self.position[0] += 10
+            new_head[0] += 10
 
-        self.body.insert(0, list(self.position))
-
-        if self.position == food_position:
+        # Check if the snake has eaten the food
+        if new_head == food_position:
+            self.body.insert(0, new_head)  # Add new head and keep the tail (snake grows)
+            self.position = new_head  # Update the snake's position
+            print(f"Updated position: {self.position}")
+            print(f"Updated body: {self.body}")
             return True
         else:
-            self.body.pop()
+            self.body.pop()  # Remove the tail
+            self.body.insert(0, new_head)  # Add new head (snake moves but doesn't grow)
+            self.position = new_head  # Update the snake's position
+            print(f"Updated position: {self.position}")
+            print(f"Updated body: {self.body}")
             return False
 
     def check_collision(self):
@@ -46,6 +58,9 @@ class Snake:
             if segment == self.position:
                 return True
         return False
+    def draw(self, screen):
+        for segment in self.body:
+            pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(segment[0], segment[1], 10, 10))
 
     def get_head_position(self):
         return self.position
